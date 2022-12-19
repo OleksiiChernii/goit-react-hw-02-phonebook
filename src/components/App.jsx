@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { nanoid } from 'nanoid';
-import {Phonebook, Contacts} from './Phonebook';
+import {Phonebook} from './Phonebook';
 
 export const App = () => {
   const [state, setState] = useState({
@@ -39,5 +39,6 @@ export const App = () => {
       filter
     })
   }
+  
   return <Phonebook state={state} handler={handler} deleteHandler={deleteHandler} filterHandler={filterHandler}/>;
 };
