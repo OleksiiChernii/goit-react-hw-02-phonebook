@@ -1,9 +1,20 @@
 import PropTypes from 'prop-types';
 
-export function Phonebook({ handler }) {
+export function Phonebook({ state, handler, filterHandler, deleteHandler }) {
   return (
     <>
       <h1>Phonebook</h1>
+      <ContactForm handler={handler} />
+      <h2>Contacts</h2>
+      <Filter filterHandler={filterHandler} />
+      <ContactList state={state} deleteHandler={deleteHandler} />
+    </>
+  );
+}
+
+function ContactForm({ handler }) {
+  return (
+    <>
       <form onSubmit={handler}>
         <label>
           Name
@@ -35,17 +46,11 @@ export function Phonebook({ handler }) {
   );
 }
 
-Phonebook.propTypes = {
-  handler: PropTypes.func.isRequired,
-};
-
-export function Contacts({ state, filterHandler, deleteHandler }) {
+export function ContactList({ state, deleteHandler }) {
   const { contacts, filter } = state;
   return (
     <>
-      <h1>Contacts</h1>
       <p>Find contacts by name</p>
-      <input type="text" name="filter" onInput={filterHandler} />
       <ul>
         {contacts
           .filter(
@@ -54,7 +59,10 @@ export function Contacts({ state, filterHandler, deleteHandler }) {
           )
           .map(({ id, name, number }) => (
             <li key={id}>
-              {name}: {number} <button type='button' onClick={() => deleteHandler(id)}>delete</button>
+              {name}: {number}{' '}
+              <button type="button" onClick={() => deleteHandler(id)}>
+                delete
+              </button>
             </li>
           ))}
       </ul>
@@ -62,7 +70,12 @@ export function Contacts({ state, filterHandler, deleteHandler }) {
   );
 }
 
-Contacts.propTypes = {
+function Filter({ filterHandler }) {
+  return <input type="text" name="filter" onInput={filterHandler} />;
+}
+
+Phonebook.propTypes = {
+  handler: PropTypes.func.isRequired,
   state: PropTypes.shape({
     contacts: PropTypes.arrayOf(
       PropTypes.shape({
@@ -73,5 +86,26 @@ Contacts.propTypes = {
     ).isRequired,
   }).isRequired,
   filterHandler: PropTypes.func.isRequired,
+  deleteHandler: PropTypes.func.isRequired,
+};
+
+ContactForm.propTypes = {
+  handler: PropTypes.func.isRequired,
+};
+
+Filter.propTypes = {
+  filterHandler: PropTypes.func.isRequired,
+};
+
+ContactList.propTypes = {
+  state: PropTypes.shape({
+    contacts: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        number: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
+      }).isRequired
+    ).isRequired,
+  }).isRequired,
   deleteHandler: PropTypes.func.isRequired,
 };

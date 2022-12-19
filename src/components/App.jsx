@@ -13,6 +13,12 @@ export const App = () => {
     const [name, number] = e.target;
 
     const {contacts} = state;
+    if(contacts.find(contact => contact.name == name.value)){
+      alert(name.value + ' is already in contacts');
+      name.value = '';
+      number.value = '';
+      return;
+    }
     setState({
       contacts: [...contacts, { name: name.value, number: number.value ,id: nanoid() }],
       filter: ''
@@ -35,7 +41,6 @@ export const App = () => {
   }
   return (
   <>
-    <Phonebook handler={handler} />
-    <Contacts state={state} filterHandler={filterHandler} deleteHandler={deleteHandler}/>
+    <Phonebook state={state} handler={handler} deleteHandler={deleteHandler} filterHandler={filterHandler}/>
   </>);
 };
