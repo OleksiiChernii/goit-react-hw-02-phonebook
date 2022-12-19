@@ -39,8 +39,5 @@ export const App = () => {
       filter
     })
   }
-  return (
-  <>
-    <Phonebook state={state} handler={handler} deleteHandler={deleteHandler} filterHandler={filterHandler}/>
-  </>);
+  return <Phonebook state={state} handler={handler} deleteHandler={deleteHandler} filterHandler={filterHandler}/>;
 };
