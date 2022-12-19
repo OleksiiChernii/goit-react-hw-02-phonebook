@@ -39,7 +39,7 @@ Phonebook.propTypes = {
   handler: PropTypes.func.isRequired,
 };
 
-export function Contacts({ state, filterHandler }) {
+export function Contacts({ state, filterHandler, deleteHandler }) {
   const { contacts, filter } = state;
   return (
     <>
@@ -54,7 +54,7 @@ export function Contacts({ state, filterHandler }) {
           )
           .map(({ id, name, number }) => (
             <li key={id}>
-              {name}: {number}
+              {name}: {number} <button type='button' onClick={() => deleteHandler(id)}>delete</button>
             </li>
           ))}
       </ul>
@@ -73,4 +73,5 @@ Contacts.propTypes = {
     ).isRequired,
   }).isRequired,
   filterHandler: PropTypes.func.isRequired,
+  deleteHandler: PropTypes.func.isRequired,
 };

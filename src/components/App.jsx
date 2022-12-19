@@ -5,8 +5,6 @@ import {Phonebook, Contacts} from './Phonebook';
 export const App = () => {
   const [state, setState] = useState({
     contacts: [],
-    name: '',
-    number: '',
     filter: ''
   });
 
@@ -17,8 +15,7 @@ export const App = () => {
     const {contacts} = state;
     setState({
       contacts: [...contacts, { name: name.value, number: number.value ,id: nanoid() }],
-      name: name.value,
-      number: number.value
+      filter: ''
     });
     name.value = '';
     number.value = '';
@@ -29,9 +26,16 @@ export const App = () => {
     setState({...state, filter});
   }
 
+  const deleteHandler = id => {
+    const {contacts, filter} = state;
+    setState({
+      contacts: [...contacts.filter(contact => contact.id !== id)],
+      filter
+    })
+  }
   return (
   <>
     <Phonebook handler={handler} />
-    <Contacts state={state} filterHandler={filterHandler}/>
+    <Contacts state={state} filterHandler={filterHandler} deleteHandler={deleteHandler}/>
   </>);
 };
