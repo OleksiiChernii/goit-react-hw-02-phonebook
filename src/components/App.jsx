@@ -13,7 +13,7 @@ export const App = () => {
     const [name, number] = e.target;
 
     const {contacts} = state;
-    if(contacts.find(contact => contact.name == name.value)){
+    if(contacts.find(contact => contact.name === name.value)){
       alert(name.value + ' is already in contacts');
       name.value = '';
       number.value = '';
@@ -39,6 +39,6 @@ export const App = () => {
       filter
     })
   }
-  
+
   return <Phonebook state={state} handler={handler} deleteHandler={deleteHandler} filterHandler={filterHandler}/>;
 };
