@@ -1,54 +1,63 @@
-import { useState } from 'react';
+import { Component } from 'react';
 import { nanoid } from 'nanoid';
-import { Phonebook } from './Phonebook';
+import { Section } from './Section';
+import { ContactForm } from './ContactForm';
+import { Filter } from './Filter';
+import { ContactList } from './ContactList';
 
-export const App = () => {
-  const [state, setState] = useState({
+export class App extends Component {
+  state = {
     contacts: [],
     filter: '',
-  });
+  };
 
-  const handler = e => {
-    e.preventDefault();
-    const [name, number] = e.target;
-
-    const { contacts } = state;
+  handler = ({ name, number }) => {
+    const { contacts } = this.state;
     if (contacts.find(contact => contact.name === name.value)) {
       alert(name.value + ' is already in contacts');
-      name.value = '';
-      number.value = '';
       return;
     }
-    setState({
-      contacts: [
-        ...contacts,
-        { name: name.value, number: number.value, id: nanoid() },
-      ],
+    this.setState({
+      contacts: [...contacts, { name: name, number: number, id: nanoid() }],
       filter: '',
     });
-    name.value = '';
-    number.value = '';
   };
 
-  const filterHandler = e => {
-    const filter = e.target.value;
-    setState({ ...state, filter });
+  filterHandler = filter => {
+    this.setState({ ...this.state, filter });
   };
 
-  const deleteHandler = id => {
-    const { contacts, filter } = state;
-    setState({
+  deleteHandler = id => {
+    const { contacts, filter } = this.state;
+    this.setState({
       contacts: [...contacts.filter(contact => contact.id !== id)],
       filter,
     });
   };
 
-  return (
-    <Phonebook
-      state={state}
-      handler={handler}
-      deleteHandler={deleteHandler}
-      filterHandler={filterHandler}
-    />
-  );
-};
+  getContacts = () => {
+    return this.state.contacts.filter(
+      ({ name }) =>
+        !this.state.filter ||
+        name.toLowerCase().startsWith(this.state.filter.toLowerCase())
+    );
+  };
+
+  render() {
+    return (
+      <>
+        <Section title="Phonebook">
+          <ContactForm handler={this.handler} />
+        </Section>
+        <Section title="Contacts">
+          <Filter filterHandler={this.filterHandler} />
+          <ContactList
+            contacts={this.getContacts()}
+            deleteHandler={this.deleteHandler}
+          />
+        </Section>
+      </>
+    );
+  }
+}
+

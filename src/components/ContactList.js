@@ -1,38 +1,31 @@
 import PropTypes from 'prop-types';
+import { ContactItem } from './ContactItem';
 
-export function ContactList({ state, deleteHandler }) {
-  const { contacts, filter } = state;
+export function ContactList({ contacts, deleteHandler }) {
   return (
     <>
-      <p>Find contacts by name</p>
       <ul>
-        {contacts
-          .filter(
-            ({ name }) =>
-              !filter || name.toLowerCase().startsWith(filter.toLowerCase())
-          )
-          .map(({ id, name, number }) => (
-            <li key={id}>
-              {name}: {number}{' '}
-              <button type="button" onClick={() => deleteHandler(id)}>
-                delete
-              </button>
-            </li>
-          ))}
+        {contacts.map(({ id, name, number }) => (
+          <ContactItem
+            key={id}
+            id={id}
+            name={name}
+            number={number}
+            deleteHandler={deleteHandler}
+          />
+        ))}
       </ul>
     </>
   );
 }
 
 ContactList.propTypes = {
-  state: PropTypes.shape({
-    contacts: PropTypes.arrayOf(
-      PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        number: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-      }).isRequired
-    ).isRequired,
-  }).isRequired,
+  contacts: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      number: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+    }).isRequired
+  ).isRequired,
   deleteHandler: PropTypes.func.isRequired,
 };

@@ -3,7 +3,15 @@ import PropTypes from 'prop-types';
 export function ContactForm({ handler }) {
   return (
     <>
-      <form onSubmit={handler}>
+      <form
+        onSubmit={e => {
+          e.preventDefault();
+          const [name, number] = e.target;
+          handler({ name: name.value, number: number.value });
+          name.value = '';
+          number.value = '';
+        }}
+      >
         <label>
           Name
           <br />
