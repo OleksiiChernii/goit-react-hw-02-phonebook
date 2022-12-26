@@ -13,25 +13,23 @@ export class App extends Component {
 
   handler = ({ name, number }) => {
     const { contacts } = this.state;
-    if (contacts.find(contact => contact.name === name.value)) {
-      alert(name.value + ' is already in contacts');
+    if (contacts.find(contact => contact.name === name)) {
+      alert(name + ' is already in contacts');
       return;
     }
     this.setState({
       contacts: [...contacts, { name: name, number: number, id: nanoid() }],
-      filter: '',
     });
   };
 
   filterHandler = filter => {
-    this.setState({ ...this.state, filter });
+    this.setState({ filter });
   };
 
   deleteHandler = id => {
-    const { contacts, filter } = this.state;
+    const { contacts } = this.state;
     this.setState({
       contacts: [...contacts.filter(contact => contact.id !== id)],
-      filter,
     });
   };
 
